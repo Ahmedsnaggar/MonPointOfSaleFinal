@@ -1,29 +1,34 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using MonPointOfSaleFinal.App.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using MonPointOfSaleFinal.App.Intefaces;
 using MonPointOfSaleFinal.Entities.Models;
 
 namespace MonPointOfSaleFinal.App.Controllers
 {
     public class CategoriesController : Controller
     {
-        private MyDbContext _db;
-        public CategoriesController(MyDbContext db)
-        {
-            _db = db;
-        }
+        //private MyDbContext _db;
+        //public CategoriesController(MyDbContext db)
+        //{
+        //    _db = db;
+        //}
+        private ICategoryRepository _repository;
 
-        // GET: CategoriesController
-        public ActionResult Index()
+        public CategoriesController(ICategoryRepository repository)
         {
-            var categories = _db.Categories;
-            return View(categories.ToList());
+            _repository = repository;
+        }
+        // GET: CategoriesController
+        public async Task<ActionResult> Index()
+        {
+            var categories = await _repository.GetAllCategories();
+            return View(categories);
         }
 
         // GET: CategoriesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var category = await _repository.GetCategoryById(id);
+            return View(category);
         }
         [HttpGet]
         // GET: CategoriesController/Create
@@ -35,18 +40,17 @@ namespace MonPointOfSaleFinal.App.Controllers
         // POST: CategoriesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category item)
+        public async Task<ActionResult> Create(Category item)
         {
             try
             {
-                var Isexists = _db.Categories.Any(c=> c.CategoryName == item.CategoryName);
+                var Isexists = _repository.GetAllCategories().Result.Any(c=> c.CategoryName == item.CategoryName);
                 if (Isexists == true) 
                 {
                     ViewBag.ExistsError = "Category Already exists";
                     return View();
                 }
-                _db.Categories.Add(item);
-                _db.SaveChanges();
+               await  _repository.AddCategory(item);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -56,18 +60,20 @@ namespace MonPointOfSaleFinal.App.Controllers
         }
 
         // GET: CategoriesController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var category = await _repository.GetCategoryById(id);
+            return View(category);
         }
 
         // POST: CategoriesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, Category item)
         {
             try
             {
+                await _repository.UpdateCategory(item);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -77,18 +83,20 @@ namespace MonPointOfSaleFinal.App.Controllers
         }
 
         // GET: CategoriesController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var category = await _repository.GetCategoryById(id);
+            return View(category);
         }
 
         // POST: CategoriesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                await _repository.DeleteCategory(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
