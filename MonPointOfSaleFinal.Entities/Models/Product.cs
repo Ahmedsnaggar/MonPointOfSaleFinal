@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MonPointOfSaleFinal.Entities.Models
@@ -14,5 +15,9 @@ namespace MonPointOfSaleFinal.Entities.Models
         [ForeignKey(nameof(category))]
         public int categoryId { get; set; }
         public Category? category { get; set; }
+        [NotMapped]
+        public List<Category> categoryList { get; set; }
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
     }
 }

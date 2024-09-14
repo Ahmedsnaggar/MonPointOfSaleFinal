@@ -1,10 +1,10 @@
-﻿@model IEnumerable<MonPointOfSaleFinal.Entities.Models.Product>
+﻿@model IEnumerable<MonPointOfSaleFinal.Entities.Models.Store>
 
 @{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Stores List";
 }
 
-<h1>Products</h1>
+<h1>Stores List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,16 +16,13 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                @Html.DisplayNameFor(model => model.StoreName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DefaulPrice)
+                @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.category.CategoryName)
+                @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th></th>
         </tr>
@@ -37,16 +34,13 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
+                @Html.DisplayFor(modelItem => item.StoreName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DefaulPrice)
+                @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.category.CategoryName)
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

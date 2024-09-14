@@ -1,15 +1,21 @@
 ﻿@model MonPointOfSaleFinal.Entities.Models.Product
 
 @{
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Edit Product";
 }
 
-<h1>Create Product</h1>
+<h1>Edit Product</h1>
+
 <hr />
 <div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly/>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
@@ -27,33 +33,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="categoryId" class="control-label"></label>
-                @* <select asp-for="categoryId" class="form-control" >
-                    @foreach (var item in ViewBag.categories)
-                    {
-                        <option value="@item.Id">@item.CategoryName</option>
-                    }
-                </select> *@
-                @* <select asp-for="categoryId" class="form-control">
-                    @foreach (var item in Model.categoryList)
-                    {
-                        <option value="@item.Id">@item.CategoryName</option>
-                    }
-                </select> *@
-                <select asp-for="categoryId" asp-items="@(new SelectList(Model.categoryList, "Id", "CategoryName"))" class="form-control">
-                    <option value="-1">-- Select a category --</option>
+                <select asp-for="categoryId" asp-items="@(new SelectList(Model.categoryList, "Id", "CategoryName"))" class="form-control" >
+
                 </select>
-                
                 <span asp-validation-for="categoryId" class="text-danger"></span>
             </div>
-            <div class="form-group float-end">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class=" float-end">Back to List</a>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

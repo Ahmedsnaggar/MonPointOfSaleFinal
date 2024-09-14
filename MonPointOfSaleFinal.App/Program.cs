@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MonPointOfSaleFinal.App.Intefaces;
 using MonPointOfSaleFinal.App.Models;
 using MonPointOfSaleFinal.App.Repositories;
+using MonPointOfSaleFinal.Entities.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<MyDbContext>(opt =>
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 
