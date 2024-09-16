@@ -14,7 +14,7 @@ builder.Services.AddDbContext<MyDbContext>(opt =>
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+builder.Services.AddScoped<IUploudFile, UploadFile>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

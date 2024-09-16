@@ -12,18 +12,29 @@ namespace MonPointOfSaleFinal.App.Controllers
        private  IGenericRepository<Product> _ProductRepository;
         private IGenericRepository<Category> _CategoryRepository;
         private IWebHostEnvironment _environment;
-        public ProductsController(IGenericRepository<Product> ProductRepository, IGenericRepository<Category> categoryRepository, IWebHostEnvironment environment)
+        private IUploudFile _uploadFile;
+        public ProductsController(IGenericRepository<Product> ProductRepository, IGenericRepository<Category> categoryRepository, IWebHostEnvironment environment, IUploudFile uploadFile)
         {
             _ProductRepository = ProductRepository;
             _CategoryRepository = categoryRepository;
             _environment = environment;
+            _uploadFile = uploadFile;
         }
 
         // GET: ProductsController
-
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string search)
         {
-            var products = await _ProductRepository.GetAllAsync(inculdes: new[] { "category" });
+            IEnumerable<Product> products;
+            if (string.IsNullOrEmpty(search))
+            {
+                products = await _ProductRepository.GetAllAsync(inculdes: new[] { "category" });
+            }
+            else
+            {
+                ViewBag.Search = search;
+                products = await _ProductRepository.GetAllAsync(p=> p.ProductName.Contains(search) ,inculdes: new[] { "category" });
+            }
+            
             return View(products);
         }
 
@@ -53,20 +64,8 @@ namespace MonPointOfSaleFinal.App.Controllers
                 
                 if (item.ImageFile != null)
                 {
-                    string upLoadFolder = _environment.WebRootPath + "\\Images\\ProductsImages";
-                    if(Directory.Exists(upLoadFolder) == false)
-                    {
-                        Directory.CreateDirectory(upLoadFolder);
-                    }
-                    string UniqueFileName = Guid.NewGuid().ToString() + "_" + item.ImageFile.FileName;
-                    string FullPath = Path.Combine(upLoadFolder, UniqueFileName);
-
-                    using(var stream = new FileStream(FullPath, FileMode.Create))
-                    {
-                        await item.ImageFile.CopyToAsync(stream);
-                        stream.Dispose();
-                    }
-                    item.ProductImage = "\\Images\\ProductsImages\\" + item.ImageFile.FileName;
+                    string FilePath = await _uploadFile.UploadFileAsync("\\Images\\ProductsImages\\", item.ImageFile);
+                    item.ProductImage = FilePath;
                 }
 
                 await _ProductRepository.AddAsync(item);
@@ -94,6 +93,11 @@ namespace MonPointOfSaleFinal.App.Controllers
         {
             try
             {
+                if (item.ImageFile != null)
+                {
+                    string FilePath = await _uploadFile.UploadFileAsync("\\Images\\ProductsImages\\", item.ImageFile);
+                    item.ProductImage = FilePath;
+                }
                 await _ProductRepository.UpdateAsync(item);
                 return RedirectToAction(nameof(Index));
             }
