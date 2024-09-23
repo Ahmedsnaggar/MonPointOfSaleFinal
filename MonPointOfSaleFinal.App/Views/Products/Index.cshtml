@@ -21,12 +21,13 @@
     <button type="submit" class="btn btn-info">Search</button>
         </div>
     </div>
+    <hr />
+    <label class="control-label">Search By Ajax</label>
+    <input id="livesearchtags" class="form-control" type="text" name="search" placeholder="Search in products" value="@ViewBag.Search" autocomplete="off" />
 </form>
 <hr />
-<div class="row">
-@foreach(var item in Model)
-{
-        <partial name="_ProductsCards" model="item"/>
+<div class="row" id="ProductCards">
+        <partial name="_ProductsCards" model="Model"/>
     @* <div class="card mb-3 col-md-4">
         <div class="card-header">
             <h5>@item.ProductName</h5>
@@ -49,7 +50,6 @@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
         </div>
     </div> *@
-}
 </div>
 @* <table class="table">
     <thead>
@@ -107,3 +107,31 @@
 }
     </tbody>
 </table> *@
+@section scripts {
+    <script>
+
+
+        $('#livesearchtags').on('keyup', function (e) {
+            //Run LiveSearch on ever key up
+            LiveSearch()
+        });
+
+        function LiveSearch() {
+            //Get the input value
+            debugger;
+            let value = $('#livesearchtags').val();
+
+            $.ajax({
+                type: "Get",
+                // You can use the absolute url eg www.site.com/MyControllerName/LiveTagSearch or the relative path live below
+                url: '@Url.Action("SearchWithAjax", "Products")',
+                // Attach the value to a parameter called search
+                data: { search: value },
+                datatype: "html",
+                success: function (data) {
+                    $("#ProductCards").html(data);
+                }
+            });
+        }
+    </script>
+}

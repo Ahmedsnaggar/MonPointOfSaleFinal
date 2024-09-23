@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MonPointOfSaleFinal.App.Models;
 
@@ -11,9 +12,11 @@ using MonPointOfSaleFinal.App.Models;
 namespace MonPointOfSaleFinal.App.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923164616_AddAddressToUsersTable")]
+    partial class AddAddressToUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,20 +50,6 @@ namespace MonPointOfSaleFinal.App.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "540fa4db-060f-4f1b-b60a-dd199bfe4f0b",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "540fa4db-060f-4f1b-b60a-dd199bfe4111",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -148,23 +137,6 @@ namespace MonPointOfSaleFinal.App.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "62fe5285-fd68-4711-ae93-673787f4ac66",
-                            RoleId = "540fa4db-060f-4f1b-b60a-dd199bfe4f0b"
-                        },
-                        new
-                        {
-                            UserId = "62fe5285-fd68-4711-ae93-673787f4a111",
-                            RoleId = "540fa4db-060f-4f1b-b60a-dd199bfe4111"
-                        },
-                        new
-                        {
-                            UserId = "62fe5285-fd68-4711-ae93-673787f4ac66",
-                            RoleId = "540fa4db-060f-4f1b-b60a-dd199bfe4111"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -253,40 +225,6 @@ namespace MonPointOfSaleFinal.App.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "62fe5285-fd68-4711-ae93-673787f4ac66",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f71a596-479a-434f-8683-ea39ce9d3f33",
-                            Email = "admin@admin.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@ADMIN.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFBrgeUTffz0SLhgzcvuGLh4pqAgPUXOywyHSznt5sX7O55WGnXg47RcDchEY23big==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "839cf1e0-87b5-4910-827e-a266c133afec",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "62fe5285-fd68-4711-ae93-673787f4a111",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "efff9de0-dcec-4423-9910-df4016b476e9",
-                            Email = "user@user.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@USER.COM",
-                            NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAENJ9+oIabmduUNw3Ye+LSe77Nwgb7g8oBRCpyyOkKhQMm+YIpiXwl5fV9ligU8j04Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "058d3962-082f-4c27-bb9d-37becc942307",
-                            TwoFactorEnabled = false,
-                            UserName = "user"
-                        });
                 });
 
             modelBuilder.Entity("MonPointOfSaleFinal.Entities.Models.Category", b =>

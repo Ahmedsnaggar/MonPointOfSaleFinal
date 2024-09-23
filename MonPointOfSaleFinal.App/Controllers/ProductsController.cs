@@ -37,6 +37,20 @@ namespace MonPointOfSaleFinal.App.Controllers
             
             return View(products);
         }
+        public async Task<ActionResult> SearchWithAjax(string search)
+        {
+            IEnumerable<Product> products;
+            if (string.IsNullOrEmpty(search))
+            {
+                products = await _ProductRepository.GetAllAsync(inculdes: new[] { "category" });
+            }
+            else
+            {
+                ViewBag.Search = search;
+                products = await _ProductRepository.GetAllAsync(p => p.ProductName.Contains(search), inculdes: new[] { "category" });
+            }
+            return PartialView("_ProductsCards", products);
+        }
 
         // GET: ProductsController/Details/5
         public async Task<ActionResult> Details(int id)
