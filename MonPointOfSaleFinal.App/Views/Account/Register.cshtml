@@ -3,14 +3,16 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = "_AccountLayout";
 }
-
+ 
 <h1>Register</h1>
+  <hr />
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Register" method="post">
             <h2>Create new account</h2>
-            <hr />
+         
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating mb-3">
                 

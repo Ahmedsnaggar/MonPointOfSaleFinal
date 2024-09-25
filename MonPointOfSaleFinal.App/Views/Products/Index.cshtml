@@ -6,10 +6,13 @@
 <div class="row">
 
     <h1 class="col-md-6">Products</h1>
-
-    <p class="col-md-6">
-        <a asp-action="Create" class="btn btn-success float-end">Create New</a>
-    </p>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p class="col-md-6">
+            <a asp-action="Create" class="btn btn-success float-end">Create New</a>
+        </p>
+    }
+    
 </div>
 <form asp-action="index" method="get">
     <label class="control-label">Search</label>

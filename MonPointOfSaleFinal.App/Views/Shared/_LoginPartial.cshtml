@@ -6,10 +6,12 @@
     @if (_signInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <h3>Hello, @User.Identity.Name</h3>
+            <h5>Hello, @User.Identity.Name &nbsp;</h5>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Logout</a>
+            <form asp-action="Logout" method="post" asp-controller="Account">
+            <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
         </li>
     }
     else
@@ -18,7 +20,7 @@
             <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Login</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
         </li>
     }
 

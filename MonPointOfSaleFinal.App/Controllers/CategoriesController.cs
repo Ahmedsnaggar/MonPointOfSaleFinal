@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MonPointOfSaleFinal.App.Intefaces;
 using MonPointOfSaleFinal.Entities.Models;
 
@@ -18,12 +19,13 @@ namespace MonPointOfSaleFinal.App.Controllers
             _repository = repository;
         }
         // GET: CategoriesController
+        [Authorize]
         public async Task<ActionResult> Index()
         {
             var categories = await _repository.GetAllAsync();
             return View(categories);
         }
-
+        [Authorize]
         // GET: CategoriesController/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -32,6 +34,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         }
         [HttpGet]
         // GET: CategoriesController/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -40,6 +43,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         // POST: CategoriesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult> Create(Category item)
         {
             try
@@ -60,6 +64,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         }
 
         // GET: CategoriesController/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             var category = await _repository.GetByIdAsync(id);
@@ -69,6 +74,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         // POST: CategoriesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id, Category item)
         {
             try
@@ -83,6 +89,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         }
 
         // GET: CategoriesController/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var category = await _repository.GetByIdAsync(id);
@@ -92,6 +99,7 @@ namespace MonPointOfSaleFinal.App.Controllers
         // POST: CategoriesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try

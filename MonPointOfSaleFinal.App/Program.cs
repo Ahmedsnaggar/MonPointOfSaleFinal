@@ -26,6 +26,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(
     }
     ).AddEntityFrameworkStores<MyDbContext>().AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.AccessDeniedPath = new PathString("/Account/AccessDeniedNew");
+});
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

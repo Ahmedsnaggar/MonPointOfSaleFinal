@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MonPointOfSaleFinal.App.Intefaces;
@@ -7,6 +8,7 @@ using MonPointOfSaleFinal.Entities.Models;
 
 namespace MonPointOfSaleFinal.App.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
        private  IGenericRepository<Product> _ProductRepository;
@@ -20,7 +22,7 @@ namespace MonPointOfSaleFinal.App.Controllers
             _environment = environment;
             _uploadFile = uploadFile;
         }
-
+        [AllowAnonymous]
         // GET: ProductsController
         public async Task<ActionResult> Index(string search)
         {
@@ -37,6 +39,7 @@ namespace MonPointOfSaleFinal.App.Controllers
             
             return View(products);
         }
+        [Authorize(Roles ="Admin, User")]
         public async Task<ActionResult> SearchWithAjax(string search)
         {
             IEnumerable<Product> products;

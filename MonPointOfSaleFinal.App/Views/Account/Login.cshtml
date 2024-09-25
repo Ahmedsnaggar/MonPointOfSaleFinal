@@ -1,0 +1,40 @@
+﻿@model MonPointOfSaleFinal.Entities.ViewModels.Account.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_AccountLayout";
+}
+
+<h1>Login</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Login">
+            <h2>Sign in to your account</h2>
+            <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-3">                
+                <input asp-for="UserName" class="form-control" placeholder="User name" autocomplete="off"/>
+                <label asp-for="UserName" class="control-label"></label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">              
+                <input asp-for="Password" class="form-control" placeholder="Password" autocomplete="off"/>
+                <label asp-for="Password" class="control-label"></label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check mb-3">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
