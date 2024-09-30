@@ -35,6 +35,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="stores" asp-action="index">Stores</a>
                         </li>
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Administration
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item nav-link text-dark" asp-action="GetAllRoles" asp-controller="Administration">Roles</a></li>
+                                    <li><a class="dropdown-item nav-link text-dark" asp-action="GetAllUsers" asp-controller="Administration">Users</a></li>
+                                </ul>
+                            </li>
+                        }
+                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
