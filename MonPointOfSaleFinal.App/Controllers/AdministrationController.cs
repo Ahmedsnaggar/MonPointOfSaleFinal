@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MonPointOfSaleFinal.App.Models;
@@ -6,14 +7,17 @@ using MonPointOfSaleFinal.Entities.ViewModels.Administraion;
 
 namespace MonPointOfSaleFinal.App.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private RoleManager<IdentityRole> _roleManager;
         private UserManager<AppUser> _userManager;
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        private IHttpContextAccessor _contextAccessor;
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager, IHttpContextAccessor contextAccessor)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _contextAccessor = contextAccessor;
         }
 
         #region Roles
@@ -100,6 +104,33 @@ namespace MonPointOfSaleFinal.App.Controllers
             await _userManager.RemoveFromRolesAsync(user, userRoles);
             await _userManager.AddToRolesAsync(user, model.UserRoles.Where(r => r.IsSelected == true).Select(ur => ur.RoleName));
             return RedirectToAction("GetAllUsers");
+        }
+        [AllowAnonymous]
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string userName = _contextAccessor.HttpContext.User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(userName);
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("index", "home");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return View(model);
         }
         #endregion
     }

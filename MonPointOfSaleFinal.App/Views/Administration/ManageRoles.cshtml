@@ -6,7 +6,7 @@
 <form asp-action="UpdateRole" method="post">
     <div class="card rounded shadow">
         <div class="card-header">
-            <input asp-for="UserId" class="form-control" />
+            <input asp-for="UserId" class="form-control" hidden/>
             <h1>User : @Model.UserName</h1>
             <h1>Email : @Model.UserEmail</h1>
         </div>
@@ -15,7 +15,7 @@
             <div class="h-11 rounded shadow p-4">
             @for (int i = 0; i < Model.UserRoles.Count; i++)
             {
-                    <input asp-for="UserRoles[i].RoleName" class="form-control" />
+                    <input asp-for="UserRoles[i].RoleName" class="form-control" hidden/>
                 <div class="form-check">
 
                     <input asp-for="UserRoles[i].IsSelected" />

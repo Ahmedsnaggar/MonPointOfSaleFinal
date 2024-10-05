@@ -47,7 +47,12 @@
                                 </ul>
                             </li>
                         }
-                       
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ChangePassword">Change Password</a>
+                            </li>
+                        }                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
